@@ -1,120 +1,146 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-  <meta charset="UTF-8" />
-  <title>Ариунзаяад зориулсан интерактив тоглоом</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #fceabb, #f8b500);
-      color: #3e2723;
-      text-align: center;
-      padding: 40px;
-    }
-    .page {
-      display: none;
-    }
-    .page.active {
-      display: block;
-    }
-    button {
-      background-color: #ff7043;
-      border: none;
-      padding: 15px 30px;
-      margin: 10px;
-      font-size: 1.1em;
-      border-radius: 25px;
-      cursor: pointer;
-      color: white;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #d84315;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Зүрхэн цуглуулах тоглоом</title>
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #ffe0ec, #ffd1b3);
+    overflow: hidden;
+  }
+  canvas {
+    display: block;
+    margin: 0 auto;
+    background: #fff0f5;
+    border: 2px solid #ff6f61;
+    border-radius: 15px;
+  }
+  #score {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    font-size: 24px;
+    color: #b71c1c;
+    margin-top: 10px;
+  }
+</style>
 </head>
 <body>
 
-  <div id="page1" class="page active">
-    <h1>💖 Ариунзаяа руу хайрын захиа 💌</h1>
-    <p>Сайн уу, Ариунзаяа! Миний зүрхэнд юу болж байгааг мэдэх үү?</p>
-    <button onclick="goToPage('page2')">Тийм! Хайрын үгсийг сонсмоор байна</button>
-    <button onclick="goToPage('page3')">Үгүй, дараа ярья</button>
-  </div>
+<canvas id="gameCanvas" width="400" height="600"></canvas>
+<div id="score">Цуглуулсан зүрхэн: 0</div>
 
-  <div id="page2" class="page">
-    <h2>Чиний ухаан надад гайхалтай санагддаг</h2>
-    <p>Чи бол миний мэдэх хамгийн ухаантай охин! 🧠💖</p>
-    <button onclick="goToPage('page4')">Дараагийн үг</button>
-    <button onclick="goToPage('page1')">Буцах</button>
-  </div>
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
 
-  <div id="page3" class="page">
-    <h2>За, хүлээж байя...</h2>
-    <p>Гэхдээ чи үргэлж миний бодолд байна шүү! 😊</p>
-    <button onclick="goToPage('page1')">Нэгэнтээ дахин оролдоё</button>
-  </div>
+  const player = {
+    x: canvas.width / 2,
+    y: canvas.height - 50,
+    radius: 20,
+    color: '#b71c1c',
+    speed: 7,
+    dx: 0
+  };
 
-  <div id="page4" class="page">
-    <h2>Намрын шар навчин дор алхаж байгаа мэт...</h2>
-    <p>Дулаан хувцаслаарай! 🍂🧥</p>
-    <button onclick="goToPage('page5')">GIF-г үзэх</button>
-    <button onclick="goToPage('page2')">Буцах</button>
-  </div>
+  const hearts = [];
+  const heartEmoji = "❤️";
 
-  <div id="page5" class="page">
-    <h2>Энд охин алхаж байна</h2>
-    <img src="https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif" alt="Намрын охин алхаж байна" width="300" />
-    <button onclick="goToPage('page6')">Хайрын зүрхэнүүдийг унагаах</button>
-    <button onclick="goToPage('page4')">Буцах</button>
-  </div>
+  let score = 0;
+  let gameOver = false;
 
-  <div id="page6" class="page">
-    <h2>❤️ Зүрхэн emoji-нууд унаж байна! ❤️</h2>
-    <p>Энэхүү хайр дүүрэн өдөрт баярлалаа! 😊</p>
-    <button onclick="startHearts()">Зүрхэнүүдийг дахин унагаах</button>
-    <button onclick="goToPage('page1')">Эхэндээ буцах</button>
-  </div>
-
-  <script>
-    function goToPage(pageId) {
-      const pages = document.querySelectorAll('.page');
-      pages.forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
+  // Товчлуурын үйлдэл
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'ArrowLeft') {
+      player.dx = -player.speed;
+    } else if(e.key === 'ArrowRight') {
+      player.dx = player.speed;
     }
+  });
 
-    function startHearts() {
-      // Зүрхэн үүсгэж унагасан хэсэг
-      for (let i = 0; i < 30; i++) {
-        let heart = document.createElement("div");
-        heart.textContent = "❤️";
-        heart.style.position = "fixed";
-        heart.style.top = "-50px";
-        heart.style.left = Math.random() * window.innerWidth + "px";
-        heart.style.fontSize = (Math.random() * 24 + 16) + "px";
-        heart.style.color = "red";
-        heart.style.userSelect = "none";
-        heart.style.pointerEvents = "none";
-        heart.style.animation = `fall 3s linear forwards`;
-        heart.style.animationDelay = (i * 0.1) + "s";
-        document.body.appendChild(heart);
-
-        heart.addEventListener('animationend', () => {
-          heart.remove();
-        });
-      }
+  document.addEventListener('keyup', (e) => {
+    if(e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      player.dx = 0;
     }
+  });
 
-    // Зүрхэн уналтын анимацийн CSS-г script-аар нэмэх
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes fall {
-        0% {transform: translateY(0) rotate(0deg); opacity: 1;}
-        100% {transform: translateY(100vh) rotate(360deg); opacity: 0;}
+  // Зүрхэн үүсгэх функц
+  function createHeart() {
+    const x = Math.random() * (canvas.width - 30) + 15;
+    hearts.push({
+      x: x,
+      y: -30,
+      size: 24,
+      speed: 2 + Math.random() * 2
+    });
+  }
+
+  // Тоглоомын шинэчлэлт функц
+  function update() {
+    if(gameOver) return;
+
+    // Тоглогчийн байрлалыг шинэчлэх
+    player.x += player.dx;
+    if(player.x - player.radius < 0) player.x = player.radius;
+    if(player.x + player.radius > canvas.width) player.x = canvas.width - player.radius;
+
+    // Зүрхэнүүдийг доош шилжүүлэх
+    hearts.forEach((heart, index) => {
+      heart.y += heart.speed;
+
+      // Тоглогчтой мөргөлдөж байна уу?
+      if(
+        heart.y + heart.size > player.y - player.radius &&
+        heart.x > player.x - player.radius &&
+        heart.x < player.x + player.radius
+      ) {
+        hearts.splice(index,1);
+        score++;
+        document.getElementById('score').textContent = `Цуглуулсан зүрхэн: ${score}`;
       }
-    `;
-    document.head.appendChild(style);
-  </script>
+      // Доод талд хүрсэн эсвэл дэлгэцээс гарсан зүрхэн
+      else if(heart.y > canvas.height) {
+        gameOver = true;
+        alert('Тоглоом дууслаа! Цуглуулсан зүрхэн: ' + score);
+        location.reload();
+      }
+    });
+  }
+
+  // Тоглоом зурах функц
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Тоглогчийг зурах (дугуй)
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+    ctx.fillStyle = player.color;
+    ctx.fill();
+    ctx.closePath();
+
+    // Зүрхэнүүдийг зурах
+    hearts.forEach(heart => {
+      ctx.font = `${heart.size}px serif`;
+      ctx.fillText(heartEmoji, heart.x, heart.y);
+    });
+  }
+
+  // Тоглоомын гол цикл
+  function gameLoop() {
+    update();
+    draw();
+    requestAnimationFrame(gameLoop);
+  }
+
+  // Зүрхэн үүсгэх интервал
+  setInterval(() => {
+    if(!gameOver) createHeart();
+  }, 800);
+
+  // Тоглоом эхлүүлэх
+  gameLoop();
+
+</script>
 
 </body>
 </html>
