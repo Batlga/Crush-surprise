@@ -2,84 +2,117 @@
 <html lang="mn">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Чамд зориулав 💖</title>
+  <title>Зөвхөн Ариунзаяад зориулав 💌</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #f9c5d1, #9795ef);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ffe0ec, #ffd1b3);
+      color: #4e342e;
       text-align: center;
+      overflow-x: hidden;
     }
 
     h1 {
-      font-size: 3em;
-      margin-bottom: 10px;
-      animation: fadeInDown 1s ease-out;
-    }
-
-    p {
-      font-size: 1.5em;
-      margin-bottom: 20px;
-      animation: fadeIn 2s ease-in;
-    }
-
-    img {
-      width: 200px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      animation: popUp 1s ease-in-out;
+      margin-top: 100px;
+      font-size: 2.5em;
+      color: #b71c1c;
     }
 
     button {
       padding: 15px 30px;
       font-size: 1.2em;
+      margin-top: 30px;
+      background-color: #ff6f61;
+      color: white;
       border: none;
-      background-color: #fff;
-      color: #ff4081;
       border-radius: 30px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: 0.3s;
     }
 
     button:hover {
-      background-color: #ffd1dc;
+      background-color: #ff3d3d;
     }
 
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .message {
+      display: none;
+      font-size: 1.5em;
+      margin-top: 30px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    .gif {
+      display: none;
+      margin-top: 20px;
     }
 
-    @keyframes popUp {
-      0% { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+    .gif img {
+      width: 250px;
+      border-radius: 15px;
+    }
+
+    /* ❤️ Зүрх унаж буй effect */
+    .heart {
+      position: fixed;
+      top: -50px;
+      font-size: 24px;
+      animation: fall 3s linear infinite;
+      color: red;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Сайн уу, миний хөөрхөн! 💌</h1>
-  <p>Энэ хуудсыг зөвхөн чамд зориулж бүтээлээ 💖</p>
-  <img src="https://media.giphy.com/media/3oz8xKaR836UJOYeOc/giphy.gif" alt="Cute Gif">
+  <h1>💌 Зөвхөн Ариунзаяад зориулав 💌</h1>
 
-  <button onclick="showMessage()">Надад нэг юм байна...</button>
+  <button onclick="showMessage()">ЭНД ДАР ❤️</button>
+
+  <div class="message" id="message">
+    🧠 Чи бол миний мэдэх хамгийн ухаантай охин шүү! 💖<br>
+    🍂 Сэрүү орж байна, дулаан хувцаслаарай 🧥✨
+  </div>
+
+  <div class="gif" id="gif">
+    <img src="https://media.giphy.com/media/j5rI9c8nAx3GE/giphy.gif" alt="namar alhj bgaa ohin">
+  </div>
 
   <script>
     function showMessage() {
-      alert("Чи бол миний хувьд хамгийн гоё хүн. 😊💘");
+      document.getElementById("message").style.display = "block";
+      document.getElementById("gif").style.display = "block";
+
+      // Зүрхнүүдийг үүсгэх
+      for (let i = 0; i < 30; i++) {
+        let heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerText = "❤️";
+
+        // Санамсаргүй байрлалд position өгнө
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+        heart.style.fontSize = (Math.random() * 10 + 20) + "px";
+
+        document.body.appendChild(heart);
+
+        // 5 сек дараа устгана
+        setTimeout(() => {
+          heart.remove();
+        }, 5000);
+      }
     }
   </script>
 
