@@ -1,146 +1,109 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-<meta charset="UTF-8" />
-<title>Зүрхэн цуглуулах тоглоом</title>
-<style>
-  body {
-    margin: 0;
-    background: linear-gradient(135deg, #ffe0ec, #ffd1b3);
-    overflow: hidden;
-  }
-  canvas {
-    display: block;
-    margin: 0 auto;
-    background: #fff0f5;
-    border: 2px solid #ff6f61;
-    border-radius: 15px;
-  }
-  #score {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-align: center;
-    font-size: 24px;
-    color: #b71c1c;
-    margin-top: 10px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>💌 Намрын захиа</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(#fbeec1, #f5c6aa);
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 600px;
+      padding: 30px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 150, 150, 0.3);
+    }
+
+    .line {
+      opacity: 0;
+      font-size: 1.6em;
+      margin: 20px 0;
+      color: #4e342e;
+      transition: opacity 1s ease-in;
+    }
+
+    .line.show {
+      opacity: 1;
+    }
+
+    .heart {
+      position: fixed;
+      top: -50px;
+      font-size: 24px;
+      animation: fall 4s linear infinite;
+      color: red;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<canvas id="gameCanvas" width="400" height="600"></canvas>
-<div id="score">Цуглуулсан зүрхэн: 0</div>
+  <div class="container">
+    <div class="line" id="line1">Сэрүү орж байна 🍂</div>
+    <div class="line" id="line2">Сайхан намар болжээ, тийм ээ?</div>
+    <div class="line" id="line3">Би зүгээр нэг санаад байгаа юм биш ээ.</div>
+    <div class="line" id="line4">Зүгээр л... 😌</div>
+    <div class="line" id="line5">Сэрүүнд дулаан хувцаслаарай 🧥</div>
+    <div class="line" id="line6">Өдөрт нь халуун цай уугаарай ☕</div>
+    <div class="line" id="line7">Биеэ сайн бодож, эрүүл байгаарай 🙏</div>
+    <div class="line" id="line8">Чамайг бодоход сэтгэл нэг л дулаахан байдаг юм 🧡</div>
+  </div>
 
-<script>
-  const canvas = document.getElementById('gameCanvas');
-  const ctx = canvas.getContext('2d');
+  <script>
+    const lines = document.querySelectorAll('.line');
+    let index = 0;
 
-  const player = {
-    x: canvas.width / 2,
-    y: canvas.height - 50,
-    radius: 20,
-    color: '#b71c1c',
-    speed: 7,
-    dx: 0
-  };
-
-  const hearts = [];
-  const heartEmoji = "❤️";
-
-  let score = 0;
-  let gameOver = false;
-
-  // Товчлуурын үйлдэл
-  document.addEventListener('keydown', (e) => {
-    if(e.key === 'ArrowLeft') {
-      player.dx = -player.speed;
-    } else if(e.key === 'ArrowRight') {
-      player.dx = player.speed;
-    }
-  });
-
-  document.addEventListener('keyup', (e) => {
-    if(e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-      player.dx = 0;
-    }
-  });
-
-  // Зүрхэн үүсгэх функц
-  function createHeart() {
-    const x = Math.random() * (canvas.width - 30) + 15;
-    hearts.push({
-      x: x,
-      y: -30,
-      size: 24,
-      speed: 2 + Math.random() * 2
-    });
-  }
-
-  // Тоглоомын шинэчлэлт функц
-  function update() {
-    if(gameOver) return;
-
-    // Тоглогчийн байрлалыг шинэчлэх
-    player.x += player.dx;
-    if(player.x - player.radius < 0) player.x = player.radius;
-    if(player.x + player.radius > canvas.width) player.x = canvas.width - player.radius;
-
-    // Зүрхэнүүдийг доош шилжүүлэх
-    hearts.forEach((heart, index) => {
-      heart.y += heart.speed;
-
-      // Тоглогчтой мөргөлдөж байна уу?
-      if(
-        heart.y + heart.size > player.y - player.radius &&
-        heart.x > player.x - player.radius &&
-        heart.x < player.x + player.radius
-      ) {
-        hearts.splice(index,1);
-        score++;
-        document.getElementById('score').textContent = `Цуглуулсан зүрхэн: ${score}`;
+    function showNextLine() {
+      if (index < lines.length) {
+        lines[index].classList.add('show');
+        index++;
+        setTimeout(showNextLine, 2000);
+      } else {
+        startHearts();
       }
-      // Доод талд хүрсэн эсвэл дэлгэцээс гарсан зүрхэн
-      else if(heart.y > canvas.height) {
-        gameOver = true;
-        alert('Тоглоом дууслаа! Цуглуулсан зүрхэн: ' + score);
-        location.reload();
-      }
-    });
-  }
+    }
 
-  // Тоглоом зурах функц
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    showNextLine();
 
-    // Тоглогчийг зурах (дугуй)
-    ctx.beginPath();
-    ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-    ctx.fillStyle = player.color;
-    ctx.fill();
-    ctx.closePath();
+    function startHearts() {
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.fontSize = (Math.random() * 16 + 16) + 'px';
+        heart.textContent = '❤️';
+        document.body.appendChild(heart);
 
-    // Зүрхэнүүдийг зурах
-    hearts.forEach(heart => {
-      ctx.font = `${heart.size}px serif`;
-      ctx.fillText(heartEmoji, heart.x, heart.y);
-    });
-  }
-
-  // Тоглоомын гол цикл
-  function gameLoop() {
-    update();
-    draw();
-    requestAnimationFrame(gameLoop);
-  }
-
-  // Зүрхэн үүсгэх интервал
-  setInterval(() => {
-    if(!gameOver) createHeart();
-  }, 800);
-
-  // Тоглоом эхлүүлэх
-  gameLoop();
-
-</script>
+        heart.addEventListener('animationend', () => {
+          heart.remove();
+        });
+      }, 300);
+    }
+  </script>
 
 </body>
 </html>
+
