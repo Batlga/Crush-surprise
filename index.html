@@ -1,119 +1,119 @@
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-  <meta charset="UTF-8">
-  <title>Зөвхөн Ариунзаяад зориулав 💌</title>
+  <meta charset="UTF-8" />
+  <title>Ариунзаяад зориулсан интерактив тоглоом</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #ffe0ec, #ffd1b3);
-      color: #4e342e;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fceabb, #f8b500);
+      color: #3e2723;
       text-align: center;
-      overflow-x: hidden;
+      padding: 40px;
     }
-
-    h1 {
-      margin-top: 100px;
-      font-size: 2.5em;
-      color: #b71c1c;
+    .page {
+      display: none;
     }
-
+    .page.active {
+      display: block;
+    }
     button {
-      padding: 15px 30px;
-      font-size: 1.2em;
-      margin-top: 30px;
-      background-color: #ff6f61;
-      color: white;
+      background-color: #ff7043;
       border: none;
-      border-radius: 30px;
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 1.1em;
+      border-radius: 25px;
       cursor: pointer;
-      transition: 0.3s;
+      color: white;
+      transition: background-color 0.3s ease;
     }
-
     button:hover {
-      background-color: #ff3d3d;
-    }
-
-    .message {
-      display: none;
-      font-size: 1.5em;
-      margin-top: 30px;
-    }
-
-    .gif {
-      display: none;
-      margin-top: 20px;
-    }
-
-    .gif img {
-      width: 250px;
-      border-radius: 15px;
-    }
-
-    /* ❤️ Зүрх унаж буй effect */
-    .heart {
-      position: fixed;
-      top: -50px;
-      font-size: 24px;
-      animation: fall 3s linear infinite;
-      color: red;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-50px) rotate(0deg);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-        opacity: 0;
-      }
+      background-color: #d84315;
     }
   </style>
 </head>
 <body>
 
-  <h1>💌 Зөвхөн Ариунзаяад зориулав 💌</h1>
-
-  <button onclick="showMessage()">ЭНД ДАР ❤️</button>
-
-  <div class="message" id="message">
-    🧠 Чи бол миний мэдэх хамгийн ухаантай охин шүү! 💖<br>
-    🍂 Сэрүү орж байна, дулаан хувцаслаарай 🧥✨
+  <div id="page1" class="page active">
+    <h1>💖 Ариунзаяа руу хайрын захиа 💌</h1>
+    <p>Сайн уу, Ариунзаяа! Миний зүрхэнд юу болж байгааг мэдэх үү?</p>
+    <button onclick="goToPage('page2')">Тийм! Хайрын үгсийг сонсмоор байна</button>
+    <button onclick="goToPage('page3')">Үгүй, дараа ярья</button>
   </div>
 
-  <div class="gif" id="gif">
-    <img src="https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif" alt="намрын охин алхаж байна">
+  <div id="page2" class="page">
+    <h2>Чиний ухаан надад гайхалтай санагддаг</h2>
+    <p>Чи бол миний мэдэх хамгийн ухаантай охин! 🧠💖</p>
+    <button onclick="goToPage('page4')">Дараагийн үг</button>
+    <button onclick="goToPage('page1')">Буцах</button>
+  </div>
+
+  <div id="page3" class="page">
+    <h2>За, хүлээж байя...</h2>
+    <p>Гэхдээ чи үргэлж миний бодолд байна шүү! 😊</p>
+    <button onclick="goToPage('page1')">Нэгэнтээ дахин оролдоё</button>
+  </div>
+
+  <div id="page4" class="page">
+    <h2>Намрын шар навчин дор алхаж байгаа мэт...</h2>
+    <p>Дулаан хувцаслаарай! 🍂🧥</p>
+    <button onclick="goToPage('page5')">GIF-г үзэх</button>
+    <button onclick="goToPage('page2')">Буцах</button>
+  </div>
+
+  <div id="page5" class="page">
+    <h2>Энд охин алхаж байна</h2>
+    <img src="https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif" alt="Намрын охин алхаж байна" width="300" />
+    <button onclick="goToPage('page6')">Хайрын зүрхэнүүдийг унагаах</button>
+    <button onclick="goToPage('page4')">Буцах</button>
+  </div>
+
+  <div id="page6" class="page">
+    <h2>❤️ Зүрхэн emoji-нууд унаж байна! ❤️</h2>
+    <p>Энэхүү хайр дүүрэн өдөрт баярлалаа! 😊</p>
+    <button onclick="startHearts()">Зүрхэнүүдийг дахин унагаах</button>
+    <button onclick="goToPage('page1')">Эхэндээ буцах</button>
   </div>
 
   <script>
-    function showMessage() {
-      document.getElementById("message").style.display = "block";
-      document.getElementById("gif").style.display = "block";
+    function goToPage(pageId) {
+      const pages = document.querySelectorAll('.page');
+      pages.forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+    }
 
-      // Зүрхнүүдийг үүсгэх
+    function startHearts() {
+      // Зүрхэн үүсгэж унагасан хэсэг
       for (let i = 0; i < 30; i++) {
         let heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerText = "❤️";
-
-        // Санамсаргүй байрлалд position өгнө
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
-        heart.style.fontSize = (Math.random() * 10 + 20) + "px";
-
+        heart.textContent = "❤️";
+        heart.style.position = "fixed";
+        heart.style.top = "-50px";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.fontSize = (Math.random() * 24 + 16) + "px";
+        heart.style.color = "red";
+        heart.style.userSelect = "none";
+        heart.style.pointerEvents = "none";
+        heart.style.animation = `fall 3s linear forwards`;
+        heart.style.animationDelay = (i * 0.1) + "s";
         document.body.appendChild(heart);
 
-        // 5 сек дараа устгана
-        setTimeout(() => {
+        heart.addEventListener('animationend', () => {
           heart.remove();
-        }, 5000);
+        });
       }
     }
+
+    // Зүрхэн уналтын анимацийн CSS-г script-аар нэмэх
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fall {
+        0% {transform: translateY(0) rotate(0deg); opacity: 1;}
+        100% {transform: translateY(100vh) rotate(360deg); opacity: 0;}
+      }
+    `;
+    document.head.appendChild(style);
   </script>
 
 </body>
