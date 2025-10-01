@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Чамд зориулав 💖</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #f9c5d1, #9795ef);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    p {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      animation: fadeIn 2s ease-in;
+    }
+
+    img {
+      width: 200px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      animation: popUp 1s ease-in-out;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border: none;
+      background-color: #fff;
+      color: #ff4081;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ffd1dc;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes popUp {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Сайн уу, миний хөөрхөн! 💌</h1>
+  <p>Энэ хуудсыг зөвхөн чамд зориулж бүтээлээ 💖</p>
+  <img src="https://media.giphy.com/media/3oz8xKaR836UJOYeOc/giphy.gif" alt="Cute Gif">
+
+  <button onclick="showMessage()">Надад нэг юм байна...</button>
+
+  <script>
+    function showMessage() {
+      alert("Чи бол миний хувьд хамгийн гоё хүн. 😊💘");
+    }
+  </script>
+
+</body>
+</html>
